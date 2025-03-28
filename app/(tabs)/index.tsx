@@ -283,13 +283,35 @@ export default function TabOneScreen() {
                 borderRadius: 8,
                 gap: 4,
                 padding: 8,
+                position: "relative",
+                backgroundColor:
+                  item.type === "urgente"
+                    ? "#F57069"
+                    : item.type === "medio"
+                    ? useColors.light["orange-light"]
+                    : "",
               }}
               key={i}
             >
-              <StyledText style={{}}>{item.title}</StyledText>
-              <StyledText>{item.description}</StyledText>
-              <StyledText>{item.from}</StyledText>
-              <StyledText>{item.data}</StyledText>
+              <StyledText style={{ fontSize: 18 }}>{item.title}</StyledText>
+              <StyledText style={{ fontSize: 14, minHeight: 60 }}>
+                {item.description}
+              </StyledText>
+              <StyledText
+                style={{ fontSize: 12, position: "absolute", top: 4, right: 4 }}
+              >
+                {item.from}
+              </StyledText>
+              <StyledText
+                style={{
+                  fontSize: 12,
+                  position: "absolute",
+                  right: 4,
+                  bottom: 4,
+                }}
+              >
+                {item.data}
+              </StyledText>
             </View>
           ))}
         </View>
