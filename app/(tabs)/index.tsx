@@ -4,18 +4,18 @@ import { StyledText, StyledTitle } from "@/components/StyledText";
 import { View } from "@/components/Themed";
 import { useColorScheme } from "@/components/useColorScheme.web";
 import { useColors } from "@/constants/Colors";
-import { useUserInfos } from "@/hooks/useUserInfos";
 
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
+
 import { ScrollView } from "react-native";
 import { billings } from "@/api/billing";
 import { tasks } from "@/api/tasks";
 import { Link } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function TabOneScreen() {
   const colorScheme = (useColorScheme() ?? "light") as keyof typeof useColors;
-  const { userInfos } = useUserInfos();
 
   const styles = StyleSheet.create({
     container: {
@@ -27,12 +27,15 @@ export default function TabOneScreen() {
     },
     titleWrapper: {
       display: "flex",
+      flexDirection: "row",
       width: "100%",
+      marginTop: 16,
+      justifyContent: "space-between",
+      alignItems: "center",
       backgroundColor: "transparent",
     },
     title: {
       fontSize: 32,
-      marginTop: 16,
       fontWeight: "bold",
       color: useColors[colorScheme].green,
     },
@@ -97,7 +100,11 @@ export default function TabOneScreen() {
     <ScrollView style={styles.container}>
       <SafeAreaView>
         <View style={styles.titleWrapper}>
-          <StyledTitle style={styles.title}>101E</StyledTitle>
+          <StyledTitle style={styles.title}>Ap 101E</StyledTitle>
+
+          <TouchableOpacity>
+            <Ionicons name="notifications" size={24} color="#acadad" />
+          </TouchableOpacity>
         </View>
 
         <View
