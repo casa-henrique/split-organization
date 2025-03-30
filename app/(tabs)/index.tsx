@@ -7,8 +7,11 @@ import { useColors } from "@/constants/Colors";
 import { useUserInfos } from "@/hooks/useUserInfos";
 
 import Entypo from "@expo/vector-icons/Entypo";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { ScrollView } from "react-native";
+import { billings } from "@/api/billing";
+import { tasks } from "@/api/tasks";
+import { Link } from "expo-router";
 
 export default function TabOneScreen() {
   const colorScheme = (useColorScheme() ?? "light") as keyof typeof useColors;
@@ -29,12 +32,9 @@ export default function TabOneScreen() {
     },
     title: {
       fontSize: 32,
+      marginTop: 16,
       fontWeight: "bold",
       color: useColors[colorScheme].green,
-    },
-    userNameText: {
-      fontSize: 16,
-      color: useColors[colorScheme].text,
     },
     fastBox: {
       display: "flex",
@@ -42,7 +42,7 @@ export default function TabOneScreen() {
       justifyContent: "center",
       alignItems: "center",
       width: "32%",
-      height: 110,
+      height: 90,
       borderRadius: 12,
       gap: 8,
     },
@@ -69,54 +69,57 @@ export default function TabOneScreen() {
       display: "flex",
       gap: 10,
       alignItems: "center",
-      fontSize: 22,
+      fontSize: 18,
       fontWeight: "bold",
+    },
+    sectionTitleWrapper: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
       marginBottom: 12,
     },
+    sectionItem: {
+      width: "100%",
+      borderRadius: 12,
+      boxShadow: "0px 0px 4px 2px rgb(238, 238, 238)",
+      margin: 5,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 20,
+      gap: 16,
+    },
   });
-
-  const notificationArray = [
-    {
-      title: "teste",
-      type: "urgente",
-      description: "descrição do teste 1",
-      from: "Henrique",
-      data: "29/03/2025",
-    },
-    {
-      title: "teste 2",
-      type: "medio",
-      description: "descrição do teste 2",
-      from: "Manuela",
-      data: "28/03/2025",
-    },
-  ];
 
   return (
     <ScrollView style={styles.container}>
       <SafeAreaView>
         <View style={styles.titleWrapper}>
           <StyledTitle style={styles.title}>101E</StyledTitle>
-          <StyledText style={styles.userNameText}>
-            {userInfos?.name.split(" ")[0]}
-          </StyledText>
         </View>
 
-        <View style={styles.section}>
-          <StyledTitle style={styles.sectionTitle}>
-            Ações Rápidas
-            <FontAwesome name="bolt" size={24} color="orange" />
-          </StyledTitle>
+        <View
+          style={{
+            ...styles.section,
+            borderTopColor: "#c7c7c76d",
+            borderTopWidth: 1,
+            borderStyle: "solid",
+            paddingTop: 20,
+          }}
+        >
           <View style={styles.fastWrapper}>
-            <TouchableOpacity
+            <Link
               style={{
                 ...styles.fastBox,
                 backgroundColor: useColors[colorScheme]["green-light"],
               }}
+              href={"/contas"}
             >
               <Entypo
                 name="credit"
-                size={40}
+                size={30}
                 color={useColors[colorScheme].green}
               />
               <StyledText
@@ -127,8 +130,9 @@ export default function TabOneScreen() {
               >
                 Contas
               </StyledText>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Link>
+            <Link
+              href={"/tarefas"}
               style={{
                 ...styles.fastBox,
                 backgroundColor: useColors[colorScheme]["blue-light"],
@@ -136,7 +140,7 @@ export default function TabOneScreen() {
             >
               <Entypo
                 name="pin"
-                size={40}
+                size={30}
                 color={useColors[colorScheme].blue}
               />
               <StyledText
@@ -145,10 +149,11 @@ export default function TabOneScreen() {
                   color: useColors[colorScheme].blue,
                 }}
               >
-                Tarefa
+                Tarefas
               </StyledText>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Link>
+            <Link
+              href={"/garagem"}
               style={{
                 ...styles.fastBox,
                 backgroundColor: useColors[colorScheme]["purple-light"],
@@ -156,7 +161,7 @@ export default function TabOneScreen() {
             >
               <Entypo
                 name="traffic-cone"
-                size={40}
+                size={30}
                 color={useColors[colorScheme].purple}
               />
               <StyledText
@@ -165,155 +170,239 @@ export default function TabOneScreen() {
                   color: useColors[colorScheme].purple,
                 }}
               >
-                Vaga
+                Garagem
               </StyledText>
-            </TouchableOpacity>
+            </Link>
           </View>
         </View>
 
         <View style={styles.section}>
-          <StyledTitle style={styles.sectionTitle}>
-            Resumo do mês
-            <FontAwesome name="calendar-check-o" size={24} color="green" />
-          </StyledTitle>
+          <View style={styles.sectionTitleWrapper}>
+            <StyledTitle style={styles.sectionTitle}>Contas</StyledTitle>
 
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-              width: "100%",
-              height: 110,
-              borderRadius: 8,
-              backgroundColor: useColors[colorScheme]["orange-light"],
-              padding: 12,
-            }}
-          >
-            <StyledText style={{ fontSize: 16, color: "#222" }}>
-              Contas Pendentes
-            </StyledText>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%",
-                justifyContent: "space-evenly",
-                backgroundColor: "transparent",
-              }}
-            >
-              <StyledText
-                style={{
-                  fontSize: 30,
-                  fontWeight: "bold",
-                  color: useColors[colorScheme].orange,
-                }}
-              >
-                R$5000,00
-              </StyledText>
-              <StyledText
-                style={{
-                  fontSize: 30,
-                  fontWeight: "bold",
-                  color: useColors[colorScheme].orange,
-                }}
-              >
-                -
-              </StyledText>
-              <StyledText
-                style={{
-                  fontSize: 30,
-                  fontWeight: "bold",
-                  color: useColors[colorScheme].orange,
-                }}
-              >
-                1/5
-              </StyledText>
-            </View>
+            <Link href={"/contas"}>
+              <TouchableOpacity>
+                <StyledText style={{ color: "blue" }}>Ver Tudo</StyledText>
+              </TouchableOpacity>
+            </Link>
           </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-              width: "100%",
-              height: 110,
-              borderRadius: 8,
-              backgroundColor: useColors[colorScheme]["blue-light"],
-              padding: 12,
-            }}
-          >
-            <StyledText style={{ fontSize: 16, color: "#222" }}>
-              Tarefas Concluidas
-            </StyledText>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%",
-                justifyContent: "space-evenly",
-                backgroundColor: "transparent",
-              }}
-            >
-              <StyledText
-                style={{
-                  fontSize: 30,
-                  fontWeight: "bold",
-                  color: useColors[colorScheme].blue,
-                }}
-              >
-                1/5
-              </StyledText>
-            </View>
-          </View>
+
+          {billings
+            .filter((item) => item.status !== "Paga")
+            .sort((a, b) => {
+              if (a.status === "Atrasada" && b.status !== "Atrasada") return -1;
+              if (a.status !== "Atrasada" && b.status === "Atrasada") return 1;
+              return a.expireIn.getTime() - b.expireIn.getTime();
+            })
+            .slice(0, 2)
+            .map((item, i) => (
+              <TouchableOpacity style={styles.sectionItem} key={i}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <StyledText style={{ fontWeight: "bold", fontSize: 16 }}>
+                    {item.title}
+                  </StyledText>
+                  <StyledText
+                    style={{
+                      fontSize: 12,
+                      padding: 4,
+                      borderRadius: 200,
+                      color:
+                        item.status === "A vencer"
+                          ? "#f59f0a"
+                          : item.status === "Atrasada"
+                          ? "#ef4444"
+                          : "gray",
+                      borderColor:
+                        item.status === "A vencer"
+                          ? "#f59f0a"
+                          : item.status === "Atrasada"
+                          ? "#ef4444"
+                          : "gray",
+                      borderWidth: 1,
+                      borderStyle: "solid",
+                      backgroundColor:
+                        item.status === "A vencer"
+                          ? "#f59f0a1d"
+                          : item.status === "Atrasada"
+                          ? "#ef44441d"
+                          : "gray",
+                    }}
+                  >
+                    {item.status}
+                  </StyledText>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <StyledText style={{ fontSize: 16 }}>
+                    R$ {item.total.toFixed(2)}
+                  </StyledText>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 12,
+                    }}
+                  >
+                    <StyledText style={{ color: "gray" }}>
+                      {item.expireIn.getDay().toLocaleString()}/
+                      {item.expireIn.getMonth().toLocaleString()}
+                    </StyledText>
+
+                    <View
+                      style={{
+                        backgroundColor: "red",
+                        borderRadius: 100,
+                        width: 30,
+                        height: 30,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <StyledText style={{ fontSize: 12 }}>
+                        {item.assigned.split("")[0]}
+                      </StyledText>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
         </View>
 
         <View style={styles.section}>
-          <StyledTitle style={styles.sectionTitle}>
-            Notificações <FontAwesome name="bullhorn" size={24} color="red" />
-          </StyledTitle>
+          <View style={styles.sectionTitleWrapper}>
+            <StyledTitle style={styles.sectionTitle}>Tarefas</StyledTitle>
 
-          {notificationArray.map((item, i) => (
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                borderColor: "#333",
-                borderStyle: "solid",
-                borderWidth: 1,
-                borderRadius: 8,
-                gap: 4,
-                padding: 8,
-                position: "relative",
-                backgroundColor:
-                  item.type === "urgente"
-                    ? "#F57069"
-                    : item.type === "medio"
-                    ? useColors.light["orange-light"]
-                    : "",
-              }}
-              key={i}
-            >
-              <StyledText style={{ fontSize: 18 }}>{item.title}</StyledText>
-              <StyledText style={{ fontSize: 14, minHeight: 60 }}>
-                {item.description}
-              </StyledText>
-              <StyledText
-                style={{ fontSize: 12, position: "absolute", top: 4, right: 4 }}
-              >
-                {item.from}
-              </StyledText>
-              <StyledText
-                style={{
-                  fontSize: 12,
-                  position: "absolute",
-                  right: 4,
-                  bottom: 4,
-                }}
-              >
-                {item.data}
-              </StyledText>
-            </View>
-          ))}
+            <Link href={"/tarefas"}>
+              <TouchableOpacity>
+                <StyledText style={{ color: "blue" }}>Ver Tudo</StyledText>
+              </TouchableOpacity>
+            </Link>
+          </View>
+
+          {tasks
+            .filter((item) => item.status !== "Concluida")
+            .sort((a, b) => {
+              if (a.status === "Atrasada" && b.status !== "Atrasada") return -1;
+              if (a.status !== "Atrasada" && b.status === "Atrasada") return 1;
+              return a.expireIn.getTime() - b.expireIn.getTime();
+            })
+            .slice(0, 2)
+            .map((item, i) => (
+              <TouchableOpacity style={styles.sectionItem} key={i}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <StyledText style={{ fontWeight: "bold", fontSize: 16 }}>
+                    {item.title}
+                  </StyledText>
+                  <StyledText
+                    style={{
+                      fontSize: 12,
+                      padding: 4,
+                      borderRadius: 200,
+                      color:
+                        item.status === "Pendente"
+                          ? "#f59f0a"
+                          : item.status === "Atrasada"
+                          ? "#ef4444"
+                          : "gray",
+                      borderColor:
+                        item.status === "Pendente"
+                          ? "#f59f0a"
+                          : item.status === "Atrasada"
+                          ? "#ef4444"
+                          : "gray",
+                      borderWidth: 1,
+                      borderStyle: "solid",
+                      backgroundColor:
+                        item.status === "Pendente"
+                          ? "#f59f0a1d"
+                          : item.status === "Atrasada"
+                          ? "#ef44441d"
+                          : "gray",
+                    }}
+                  >
+                    {item.status}
+                  </StyledText>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <StyledText
+                    style={{
+                      fontSize: 14,
+                      color:
+                        item.importance === "Alta"
+                          ? "#f59f0a"
+                          : item.importance === "Média"
+                          ? "#ef4444"
+                          : "#16a249",
+                    }}
+                  >
+                    {item.importance === "Alta" ? (
+                      <AntDesign name="arrowup" size={16} />
+                    ) : item.importance === "Média" ? (
+                      <AntDesign name="arrowright" size={16} />
+                    ) : item.importance === "Pequena" ? (
+                      <AntDesign name="arrowdown" size={16} />
+                    ) : null}{" "}
+                    {item.importance}
+                  </StyledText>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 12,
+                    }}
+                  >
+                    <StyledText style={{ color: "gray" }}>
+                      {item.expireIn.getDay().toLocaleString()}/
+                      {item.expireIn.getMonth().toLocaleString()}
+                    </StyledText>
+
+                    <View
+                      style={{
+                        backgroundColor: "red",
+                        borderRadius: 100,
+                        width: 30,
+                        height: 30,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <StyledText style={{ fontSize: 12 }}>
+                        {item.assigned.split("")[0]}
+                      </StyledText>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
         </View>
       </SafeAreaView>
     </ScrollView>
