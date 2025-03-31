@@ -1,4 +1,4 @@
-interface BillingsProps {
+export interface BillingsProps {
   title: string;
   description: string;
   total: number;

@@ -1,4 +1,3 @@
-import { useColorScheme } from "@/components/useColorScheme";
 import {
   Inter_300Light,
   Inter_400Regular,
@@ -10,22 +9,11 @@ import {
   WorkSans_700Bold,
 } from "@expo-google-fonts/work-sans";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { Stack } from "expo-router";
+import { Drawer } from "expo-router/drawer";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import "react-native-reanimated";
-
-export { ErrorBoundary } from "expo-router";
-export const unstable_settings = {
-  initialRouteName: "(tabs)",
-};
-
-SplashScreen.preventAutoHideAsync();
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import "../global.css";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -55,14 +43,14 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer screenOptions={{ headerShown: false }}>
+        <Drawer.Screen name="index" options={{ title: "Home" }} />
+        <Drawer.Screen name="Contas" options={{ title: "Contas" }} />
+        <Drawer.Screen name="Garagem" options={{ title: "Garagem" }} />
+        <Drawer.Screen name="Tarefas" options={{ title: "Tarefas" }} />
+      </Drawer>
+    </GestureHandlerRootView>
   );
 }
