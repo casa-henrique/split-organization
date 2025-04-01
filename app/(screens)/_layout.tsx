@@ -12,6 +12,8 @@ export default function TabsLayout() {
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
           height: "8%",
+          display: "flex",
+          flexDirection: "row",
         },
       }}
     >

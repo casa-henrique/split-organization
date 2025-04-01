@@ -1,6 +1,5 @@
-import { BillingsProps } from "@/api/billing";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Switch, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { StyledLabel } from "../StyledLabel";
@@ -10,13 +9,11 @@ import { StyledText, StyledTitle } from "../StyledText";
 interface BottomEditBillProps {
   isVisible: boolean;
   changeVisibility: () => void;
-  item: BillingsProps | undefined;
 }
 
-export function BottomEditBill({
+export function BottomAddBill({
   isVisible,
   changeVisibility,
-  item,
 }: BottomEditBillProps) {
   const [title, setTitle] = useState("");
   const [isApellant, setIsApellant] = useState(false);
@@ -41,20 +38,6 @@ export function BottomEditBill({
     { label: "A vencer", value: "vencida" },
   ];
 
-  useEffect(() => {
-    if (item) {
-      setTitle(item.title);
-      setStatus(
-        statusItems.filter((statsItem) => item.status === statsItem.label)[0]
-      );
-      setAssigned(
-        assignedItems.filter((assItem) => assItem.label === item.assigned)[0]
-      );
-      setTotal(item.valor.toLocaleString());
-      setIsApellant(item.isApellant);
-    }
-  }, [item]);
-
   return (
     <Modal
       isVisible={isVisible}
@@ -68,20 +51,14 @@ export function BottomEditBill({
     >
       <View className="flex flex-col items-center p-5 gap-4 w-full bg-white rounded-t-3xl">
         <StyledTitle className="text-xl !text-customBlue font-bold">
-          Editar Conta
+          Adicionar Conta
         </StyledTitle>
 
-        <StyledLabel
-          value={title}
-          item={item?.title}
-          onChange={setTitle}
-          label="Titulo"
-        />
+        <StyledLabel value={title} onChange={setTitle} label="Titulo" />
 
         <StyledLabel
           value={total}
           keyboardType={"numeric"}
-          item={item?.valor}
           onChange={setTotal}
           label="Valor (R$)"
         />

@@ -18,7 +18,7 @@ module.exports = {
 
         customGreen: "#16a249",
         "green-light": "#dcfce7",
-        customBlue: "#0284c7",
+        customBlue: "#3c83f6",
         "blue-light": "#dbeafe",
         customPurple: "#9333ea",
         "purple-light": "#f3e8ff",
